@@ -13,11 +13,13 @@ case "$ARCH" in
 esac
 
 URL="https://github.com/${REPO}/releases/latest/download/tatool-${OS}-${ARCH}"
-DEST="/usr/local/bin/tatool"
+
+# Use /usr/bin (always in PATH) over /usr/local/bin
+DEST="/usr/bin/tatool"
 
 echo "Downloading tatool for ${OS}/${ARCH}..."
 
-if [ -w /usr/local/bin ]; then
+if [ -w "$(dirname "$DEST")" ]; then
   curl -fsSL -o "$DEST" "$URL"
   chmod +x "$DEST"
 else
@@ -26,4 +28,4 @@ else
 fi
 
 echo "Installed tatool to ${DEST}"
-tatool version
+"$DEST" version
